@@ -11,14 +11,18 @@ cd "Home/Google Drive" &&
 sudo -u vagrant cp bashrc /home/vagrant/.bashrc &&
 sudo -u vagrant cp gitconfig /home/vagrant/.gitconfig
 
+echo "Adding root, vagrant as trusted users in the mercurial space"
+echo -e "[trusted]\nusers = root, vagrant" > /etc/mercurial/hgrc
+
 # install go from source (tip)
-echo "Pulling and building latest go source tree"
-echo -e "[trusted]\nusers = root, vagrant" > /etc/mercurial/hgrc &&
-mkdir -p /home/vagrant/go && cd /home/vagrant/go &&
-sudo -u vagrant hg clone https://code.google.com/p/go .
-# clone is not idempotent so we don't chain off it with a conditional
-sudo -u vagrant hg up default &&
+echo "Pulling latest go source tree..."
+# ensure we've got a repo to build
+[ -d /home/vagrant/go ] || hg clone -U https://code.google.com/p/go /home/vagrant/go
+cd /home/vagrant/go && hg pull && hg up default && hg summary
+echo "Building... this will take a while"
 cd src/ && ./all.bash &&
+echo "Symlinking binaries to /usr/local/bin for global access"
+ln -sf /home/vagrant/go/bin/* /usr/local/bin &&
 go version
 
 echo "Done!"
