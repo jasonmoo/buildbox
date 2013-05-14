@@ -1,6 +1,3 @@
 #buildbox
 
-A stripped down vm with git, mercurial, build-essential, and bzr packages installed and go@TIP source/install.
-
-Custom dotfiles are pushed in automatically
-
+A simple build env vm.  Comes with git/hg/bzr, build-essential, vim, curl, and latest go TIP built/installed.
