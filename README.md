@@ -1,6 +1,6 @@
 #buildbox
 
-A simple build env vm.  Comes with git/hg/bzr, build-essential, vim, curl, and latest go TIP built/installed.
+A simple Ubuntu Precise64 build env vm.  Comes with git/hg/bzr, build-essential, vim, curl, and latest go TIP built/installed.
 
 ###Install Instructions
 1. Install [Vagrant](http://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/)
