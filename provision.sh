@@ -3,13 +3,13 @@
 ## This script is run from /home/vagrant, within the VM, as root, at provision time
 
 # update all our packages and add the ones we need
-DEBIAN_FRONTEND=noninteractive
-apt-get update &&
-apt-get dist-upgrade &&
-apt-get install -y -q \
-	build-essential \
-	git mercurial bzr \
-	screen rsync vim curl bzip2 \
+export DEBIAN_FRONTEND=noninteractive
+apt-get -qy update &&
+apt-get -qy  -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade &&
+apt-get -qy install               \
+	build-essential clang         \
+	git mercurial bzr             \
+	screen rsync vim curl bzip2   \
 	psmisc iftop htop lsof strace
 
 # copy in dot files
@@ -24,11 +24,15 @@ echo -e "[trusted]\nusers = root, vagrant" > /etc/mercurial/hgrc
 echo "Pulling latest go source tree..."
 # ensure we've got a repo to build
 [ -d /usr/local/go ] || hg clone -U https://code.google.com/p/go /usr/local/go
-cd /home/vagrant/go && hg pull && hg up release && hg summary
+cd /usr/local/go && hg pull && hg up release && hg summary
 echo "Building... this will take a while"
-cd src/ && ./all.bash &&
-echo "Symlinking binaries to /usr/local/bin for global access"
-ln -sf /usr/local/go/bin/* /usr/local/bin &&
-go version
+cd src/ && ./all.bash && mkdir /home/vagrant/go &&
+echo "Setting PATH, GOROOT, GOPATH"
+cat <<EOF > /home/vagrant/.bash_extras
+PATH=$PATH:/usr/local/go/bin:/home/vagrant/go/bin
+GOROOT=/usr/local/go
+GOPATH=/home/vagrant/go
+EOF
+/usr/local/go/bin/go version
 
 echo "Done!"
