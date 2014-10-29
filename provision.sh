@@ -4,10 +4,16 @@
 
 # update all our packages and add the ones we need
 DEBIAN_FRONTEND=noninteractive
-apt-get install -y -q build-essential git mercurial bzr vim curl
+apt-get update &&
+apt-get dist-upgrade &&
+apt-get install -y -q \
+	build-essential \
+	git mercurial bzr \
+	screen rsync vim curl bzip2 \
+	psmisc iftop htop lsof strace
 
 # copy in dot files
-cd "Home/Google Drive" &&
+cd "Home/Google Drive/Dropbox/Google Drive" &&
 sudo -u vagrant cp bashrc /home/vagrant/.bashrc &&
 sudo -u vagrant cp gitconfig /home/vagrant/.gitconfig
 
@@ -17,12 +23,12 @@ echo -e "[trusted]\nusers = root, vagrant" > /etc/mercurial/hgrc
 # install go from source (tip)
 echo "Pulling latest go source tree..."
 # ensure we've got a repo to build
-[ -d /home/vagrant/go ] || hg clone -U https://code.google.com/p/go /home/vagrant/go
-cd /home/vagrant/go && hg pull && hg up default && hg summary
+[ -d /usr/local/go ] || hg clone -U https://code.google.com/p/go /usr/local/go
+cd /home/vagrant/go && hg pull && hg up release && hg summary
 echo "Building... this will take a while"
 cd src/ && ./all.bash &&
 echo "Symlinking binaries to /usr/local/bin for global access"
-ln -sf /home/vagrant/go/bin/* /usr/local/bin &&
+ln -sf /usr/local/go/bin/* /usr/local/bin &&
 go version
 
 echo "Done!"

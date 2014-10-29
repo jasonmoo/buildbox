@@ -39,7 +39,7 @@ Vagrant.configure("2") do |config|
   # update all existing packages
   # set session as noninteractive for the upgrade
   # so that gui installers don't mess up the terminal
-  config.vm.provision :shell, :inline => "sudo apt-get update &> /dev/null && sudo DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade"
+  # config.vm.provision :shell, :inline => "sudo apt-get update &> /dev/null && sudo DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade"
 
   # do what ya like
   config.vm.provision :shell, :path => "provision.sh"
