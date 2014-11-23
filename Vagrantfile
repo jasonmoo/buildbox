@@ -12,18 +12,12 @@ Vagrant.configure("2") do |config|
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+  config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
 
   # virtualbox config options -> http://www.virtualbox.org/manual/ch08.html
-  config.vm.provider :virtualbox do |vb|
-    # total ram
-    vb.customize ["modifyvm", :id, "--memory", 1024]
-    # video ram
-    vb.customize ["modifyvm", :id, "--vram", 8]
-    # number of cpus cores
-    vb.customize ["modifyvm", :id, "--cpus", 4]
-    # cpu core availability (percentage)
-    vb.customize ["modifyvm", :id, "--cpuexecutioncap", 100]
+  config.vm.provider "vmware_fusion" do |v|
+    v.vmx["memsize"] = "1024"
+    v.vmx["numvcpus"] = "2"
   end
 
   # Create a public network interface allowing the VM
