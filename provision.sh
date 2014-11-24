@@ -12,8 +12,8 @@ apt-get -qy  -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-co
 apt-get -qy install                  \
 	linux-image-generic-lts-raring   \
 	linux-headers-generic-lts-raring \
-	apt-transport-https              \
-	build-essential clang            \
+	apt-transport-https apparmor     \
+	build-essential clang pkg-config \
 	git mercurial bzr man            \
 	screen rsync vim curl bzip2      \
 	psmisc iftop htop lsof strace
@@ -52,10 +52,11 @@ export GOPATH=/home/vagrant/go
 EOF
 
 # reclaim some dirs/files
-chown vagrant:vagrant /home/vagrant/go /home/vagrant/go/src /home/.bash_extras
+chown vagrant:vagrant /home/vagrant/go /home/vagrant/.bash_extras
 
-source .bash_extras
+# forcing auto rebuild of kernel modules on reboot, fixes HGFS missing module when upgrading kernel
+echo "answer AUTO_KMODS_ENABLED yes" | tee -a /etc/vmware-tools/locations
 
-go version
-
-echo "Done!"
+# enable cgroup swap management
+echo 'GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"' | tee -a /etc/default/grubj
+update-grub
