@@ -8,11 +8,7 @@ Vagrant.configure("2") do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "precise64"
-
-  # The url from where the 'config.vm.box' box will be fetched if it
-  # doesn't already exist on the user's system.
-  config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+  config.vm.box = "box-cutter/ubuntu1404"
 
   # virtualbox config options -> http://www.virtualbox.org/manual/ch08.html
   config.vm.provider "vmware_fusion" do |v|
@@ -29,11 +25,6 @@ Vagrant.configure("2") do |config|
 
   # forward auth keys for easy githubbin, server connections
   config.ssh.forward_agent = true
-
-  # update all existing packages
-  # set session as noninteractive for the upgrade
-  # so that gui installers don't mess up the terminal
-  # config.vm.provision :shell, :inline => "sudo apt-get update &> /dev/null && sudo DEBIAN_FRONTEND=noninteractive apt-get -q -y upgrade"
 
   # do what ya like
   config.vm.provision :shell, :path => "provision.sh"
