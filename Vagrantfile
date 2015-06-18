@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "box-cutter/ubuntu1404"
+  config.vm.box = "phusion/ubuntu-14.04-amd64"
 
   # virtualbox config options -> http://www.virtualbox.org/manual/ch08.html
   config.vm.provider "vmware_fusion" do |v|
