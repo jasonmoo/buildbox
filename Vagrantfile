@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder `echo ~`.chomp, "/home/vagrant/Home"
 
   # forward auth keys for easy githubbin, server connections
-  config.ssh.forward_agent = true
+  # config.ssh.forward_agent = true
 
   # update all existing packages
   # set session as noninteractive for the upgrade
